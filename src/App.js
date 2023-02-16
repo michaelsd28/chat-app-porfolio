@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import NoPage from "./components/404 page/NoPage";
+import MainChat from "./components/chat app/MainChat";
+import LandingPage from "./components/landing page/LandingPage";
+import SigningPage from "./components/signing page/SigningPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<LandingPage />} />
+          <Route path="/" element={<SigningPage />} />
+
+          <Route path="chat/:username" element={<MainChat />} />
+          <Route path="signing" element={<SigningPage />} />
+          <Route path="*" element={<NoPage />} />
+        </Routes>
+      </BrowserRouter>
+
+      <Outlet />
+    </>
   );
 }
 

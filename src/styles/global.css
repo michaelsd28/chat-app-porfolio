@@ -1,0 +1,24 @@
+html,
+body {
+    margin: 0px;
+    overflow: hidden;
+    /* center content in the middle  vertically */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.gradient-text {
+    font-size: 72px;
+    background: -webkit-linear-gradient(#44459c, #3d6aad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+  }
