@@ -4,10 +4,13 @@ import { useParams } from 'react-router-dom'
 import '../../styles/chat.css'
 import { motion } from 'framer-motion'
 import PageAnimation from '../Page animation/PageAnimation'
+import { IconButton } from '@mui/material'
+import { Mic, Send } from '@mui/icons-material'
 let containerStyle = {
   height: '100vh',
   width: '100vw',
   display: 'flex',
+  color: 'black',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
@@ -18,6 +21,7 @@ let containerStyle = {
 
 function MainChat() {
   let { username } = useParams()
+  const [isTexting, setIsTexting] = React.useState(false)
 
   return (
     <PageAnimation>
@@ -28,24 +32,63 @@ function MainChat() {
           rel="stylesheet"
         />
 
-        <div className="container">
-          <div className="row clearfix">
-            <div className="col-lg-12">
-              <div className="card chat-app">
-                <div id="plist" className="people-list">
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text">
-                        <i className="fa fa-search"></i>
-                      </span>
+        <div className="container ">
+          <div className="row clearfix ">
+            <div className="col-lg-12 ">
+              <div
+                style={{
+                  backgroundImage:
+                    'radial-gradient( circle farthest-corner at 10% 20%,  rgba(37,145,251,0.98) 0.1%, rgba(0,7,128,1) 99.8% )',
+                }}
+                className="card chat-app"
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflow: 'auto',
+                    maxHeight: 500,
+                  }}
+                  id="plist"
+                  className="people-list "
+                >
+                  <div className="input-group ">
+                    <div
+                    className='card d-flex justify-content-center align-items-center'
+                      style={{
+                        borderRadius: 20,
+                        background:
+                          'linear-gradient( 109.6deg,  rgba(61,245,167,1) 11.2%, rgba(9,111,224,1) 91.1% )',
+                      }}
+                    >
+                      <img
+                        style={{ width: 100,margin:"20px 20px 0px 20px" ,justifyContent:'center',alignItems:'center'}}
+                        className="card-img-top"
+                        src="https://wallpapers.com/images/featured/4co57dtwk64fb7lv.jpg"
+                        alt="dasd"
+                      />
+                      <div className="card-body">
+                        <p className="card-text">
+                          Michael Santana
+                        </p>
+                        <p className="card-text">
+                            <small className="text-muted">Last updated 3 mins ago</small>
+                        </p>
+               
+                      </div>
                     </div>
+                    <div className="input-group-prepend">
+         
+                    </div>
+
                     <input
+                    style={{borderRadius:20}}
                       type="text"
-                      className="form-control"
+                      className="form-control "
                       placeholder="Search..."
                     />
                   </div>
-                  <ul className="list-unstyled chat-list mt-2 mb-0">
+                  <ul style={{overflow:"auto"}} className="list-unstyled chat-list mt-2 mb-0">
                     <li className="clearfix">
                       <img
                         src="https://bootdey.com/img/Content/avatar/avatar1.png"
@@ -66,7 +109,7 @@ function MainChat() {
                         alt="avatar"
                       />
                       <div className="about">
-                        <div className="name">Aiden Chavez</div>
+                        <div className="name">{username}</div>
                         <div className="status">
                           {' '}
                           <i className="fa fa-circle online"></i> online{' '}
@@ -207,16 +250,37 @@ function MainChat() {
                   </div>
                   <div className="chat-message clearfix">
                     <div className="input-group mb-0">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text">
-                          <i className="fa fa-send"></i>
-                        </span>
-                      </div>
                       <input
+                        style={{ borderRadius: '20px' }}
                         type="text"
                         className="form-control"
                         placeholder="Enter text here..."
                       />
+                      {isTexting ? (
+                        <div
+                          style={{ margin: '5px 5px 5px 10px' }}
+                          className="input-group-prepend"
+                        >
+                          <IconButton
+                            style={{
+                              background:
+                                'radial-gradient( circle farthest-corner at 10% 20%,  rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% )',
+                            }}
+                            aria-label="add to favorites"
+                          >
+                            <Send style={{ color: 'white' }} />
+                          </IconButton>
+                        </div>
+                      ) : (
+                        <div
+                          style={{ margin: '5px 5px 5px 10px' }}
+                          className="input-group-prepend"
+                        >
+                          <IconButton>
+                            <Mic style={{ color: 'white' }} />
+                          </IconButton>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

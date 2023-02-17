@@ -1,6 +1,6 @@
 
 .card {
-    background: #fff;
+
     transition: .5s;
     border: 0;
     margin-bottom: 30px;
@@ -20,7 +20,7 @@
 
 .chat-app .chat {
     margin-left: 280px;
-    border-left: 1px solid #eaeaea
+    border-left: 1px solid #123cc75b
 }
 
 .people-list {
@@ -33,16 +33,18 @@
 .people-list .chat-list li {
     padding: 10px 15px;
     list-style: none;
-    border-radius: 3px
+    border-radius: 10px
 }
 
 .people-list .chat-list li:hover {
-    background: #efefef;
+    background: #efefef6c;
     cursor: pointer
+
 }
 
 .people-list .chat-list li.active {
-    background: #efefef
+    background: #efefef69
+
 }
 
 .people-list .chat-list li .name {
@@ -71,7 +73,7 @@
 
 .chat .chat-header {
     padding: 15px 20px;
-    border-bottom: 2px solid #f4f7f6
+    border-bottom: 2px solid #1417c546
 }
 
 .chat .chat-header img {
@@ -87,7 +89,7 @@
 
 .chat .chat-history {
     padding: 20px;
-    border-bottom: 2px solid #fff
+    border-bottom: 2px solid #06273d59
 }
 
 .chat .chat-history ul {
@@ -114,7 +116,12 @@
 
 .chat .chat-history .message-data-time {
     color: #434651;
-    padding-left: 6px
+    padding-left: 0px;
+    margin: 0px;
+    position: relative;
+    left: 0px;
+    top: 10px;
+    font-size: 12px;
 }
 
 .chat .chat-history .message {
@@ -127,47 +134,25 @@
     position: relative
 }
 
-.chat .chat-history .message:after {
-    bottom: 100%;
-    left: 7%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #fff;
-    border-width: 10px;
-    margin-left: -10px
-}
+
 
 .chat .chat-history .my-message {
-    background: #efefef
+    background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(147,230,241,1) 0%, rgba(145,192,241,1) 45.5% );
+    border-radius: 0px 20px 20px 20px;
+    padding: 10px 20px;
 }
 
-.chat .chat-history .my-message:after {
-    bottom: 100%;
-    left: 30px;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    border-bottom-color: #efefef;
-    border-width: 10px;
-    margin-left: -10px
-}
+
 
 .chat .chat-history .other-message {
-    background: #e8f1f3;
-    text-align: right
+    background-image: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
+    text-align: right;
+    border-radius: 20px 0px 20px 20px;
+    padding: 10px 20px;
+
 }
 
-.chat .chat-history .other-message:after {
-    border-bottom-color: #e8f1f3;
-    left: 93%
-}
+
 
 .chat .chat-message {
     padding: 20px
