@@ -1,5 +1,5 @@
 import TravelExploreIcon from '@mui/icons-material/TravelExplore'
-import { Button } from '@mui/material'
+import { Button, Switch } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PageAnimation from '../Page animation/PageAnimation'
@@ -37,7 +37,7 @@ let pageStyle = {
 
 let imgStyle = {
   borderRadius: 20,
-  width: '40vw',
+  width: '50vw',
 }
 
 function LandingPage() {
@@ -47,12 +47,16 @@ function LandingPage() {
       <AnimatedBlob />
 
       <div style={containerStyle}>
+
+        {/* light/dark theme switcher on the top right */}
+
         <h1 className="gradient-text">Bienvenido a mi aplicacion de chat</h1>
 
+{/* img from assets folder  assets/chat-screenshot.png*/}
         <img
           style={imgStyle}
-          src="https://cdn.dribbble.com/userupload/3893842/file/original-57f9d15ad5ae84966c9b1d303ed56476.png"
-          alt="chat-img"
+          src={process.env.PUBLIC_URL + 'assets/chat-screenshot2.png'}
+          alt="chat screenshot"
         />
          <Link to="/login">
         <Button
