@@ -1,33 +1,69 @@
-﻿using Npgsql;
+﻿using chat_net.models;
+using Microsoft.AspNetCore.Mvc;
+using Npgsql;
+using static System.Net.Mime.MediaTypeNames;
+using System.Net.NetworkInformation;
+using System.IO;
 
 namespace chat_net.services.SQL.FileHandler
 {
     public class FileService
     {
 
-        public static bool SaveFile(SQLFile file)
+        public static string SaveFile(SQLFile file)
         {
+            String fileID = "invalid operation";
             try
             {
 
-                
-                string query = $@"INSERT INTO files (name, path, user_id) VALUES ('{file.Name}', '{file.Path}', {file.UserId})";
-
                 var connection = SQLConnection.GetConnection();
 
-                var cmd = new NpgsqlCommand(query, connection);
+                string query = "INSERT INTO files (   filename,filedata) VALUES (@file_name, @file_data)";
 
-                cmd.ExecuteNonQuery();
+                using (var command = new NpgsqlCommand(query, connection))
+                {
 
-                connection.Close();
+                    command.Parameters.AddWithValue("file_name", file.FileName);
+                    command.Parameters.AddWithValue("file_data", file.FileData);
 
-                return true;
+                 
+
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        fileID = reader["id"].ToString();
+                    }
+
+                }
+
+
+                return fileID;
             }
             catch
             {
-                return false;
+                return fileID;
             }
         }
 
+        internal static FileStreamResult? GetFile(string fileID)
+        {
+
+            string query = $@"select * from files where id = '{fileID}';";
+
+            var stream = new MemoryStream();
+
+            var connection = SQLConnection.GetConnection();
+
+
+            var command = new NpgsqlCommand(query, connection);
+            var reader = command.ExecuteReader();
+            
+            return SQLFile.GetFileFromReader(reader);
+
+            
+
+        }
+        
     }
 }

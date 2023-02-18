@@ -1,83 +1,72 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using chat_net.models;
+using chat_net.services.SQL.FileHandler;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chat_net.Controllers.FileHandler
 {
     public class UploadFileController : Controller
     {
-        // GET: UploadFileController
-        public ActionResult Index()
+        [HttpPost("upload-file")]
+        public string Index(SQLFile newFile)
         {
-            return View();
+
+            return FileService.SaveFile(newFile);
         }
 
-        // GET: UploadFileController/Details/5
-        public ActionResult Details(int id)
+        [HttpPost("upload-file2")]
+        public Task<bool> UploadFile()
         {
-            return View();
-        }
+            //Variable que retorna el valor del resultado del metodo
+            //El valor predeterminado es Falso (false)
+            bool resultado = false;
 
-        // GET: UploadFileController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+            //La variable "file" recibe el archivo en el objeto Request.Form
+            //Del POST que realiza la aplicacion a este servicio.
+            //Se envia un formulario completo donde uno de los valores es el archivo
+            IFormFile file = Request.Form.Files[0];
 
-        // POST: UploadFileController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+     
+
+    
+
+
+
+            //Se valida si la variable "file" tiene algun archivo
+            if (file.Length > 0)
             {
-                return RedirectToAction(nameof(Index));
+                //Se declara en esta variable el nombre del archivo cargado
+                string NombreArchivo = file.FileName;
+
+                //Se declara en esta variable la ruta completa con el nombre del archivo
+                string RutaFullCompleta = Path.Combine( NombreArchivo);
+
+                //Se crea una variable FileStream para carlo en la ruta definida
+                using (var stream = new FileStream(RutaFullCompleta, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+
+                    //Como se cargo correctamente el archivo
+                    //la variable "resultado" llena el valor "true"
+
+         
+
+
+
+
+                    resultado = true;
+                }
+
+                byte[] bytes = System.IO.File.ReadAllBytes(RutaFullCompleta);
+
+                FileService.SaveFile(new SQLFile() { FileName = NombreArchivo, FileData = bytes });
+
             }
-            catch
-            {
-                return View();
-            }
+
+            //Se retorna la variable "resultado" como resultado de una tarea
+            return Task.FromResult(resultado);
+
         }
 
-        // GET: UploadFileController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: UploadFileController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UploadFileController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UploadFileController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
