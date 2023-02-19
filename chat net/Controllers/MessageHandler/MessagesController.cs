@@ -7,10 +7,10 @@ namespace chat_net.Controllers.MessageHandler
 {
     public class MessagesController : Controller
     {
-        [HttpGet("/get-messages/{userID}")]
-        public List<Message> Index(string UserID)
+        [HttpGet("/get-messages/{userID}/{friendID}")]
+        public List<Message> Index(string userID, string friendID)
         {
-            return FriendsService.GetMessages(UserID);
+            return FriendsService.GetMessages(userID, friendID);
         }
 
         [HttpPost("/send-message")]

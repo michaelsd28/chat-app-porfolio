@@ -1,15 +1,16 @@
 ﻿using chat_net.models;
 using chat_net.services.SQL.Authentication;
 using Npgsql;
+using System.Diagnostics;
 
 namespace chat_net.services.SQL.UserHandler
 {
     public class LoginUserService
     {
         
-        public static User Login(LoginRequest userLogin)
+        public static User? Login(LoginRequest userLogin)
         {
-            User user = new User();
+            User? user = new User();
             try {
                 
         
@@ -21,17 +22,34 @@ namespace chat_net.services.SQL.UserHandler
                 var cmd = new NpgsqlCommand(query, connection);
 
                 var reader = cmd.ExecuteReader();
+
+             
                 
                 user = User.GetUserFromReader(reader);
 
                 connection.Close();
+
+
+
+     
+
+                if (user != null)
+                {
+                    user.friends = FriendsService.GetFriendList(user.id);
+                }
+               
+
                 return user;
 
 
-            } catch {
+            } catch (Exception ex) {
 
-                return user;
+                Debug.WriteLine($"LoginUserService:: {ex}");
+
+                return null;
             }
+
+
             
 
          

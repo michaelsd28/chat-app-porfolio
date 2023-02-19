@@ -7,7 +7,7 @@ namespace chat_net.Controllers.UserHandler
     public class FriendController : Controller
     {
 
-        [HttpGet("get-users/{userID}")]
+        [HttpGet("get-friends/{userID}")]
         public List<FriendUser> GetFriends(string userID)
         {
        

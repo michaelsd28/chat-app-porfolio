@@ -1,5 +1,6 @@
 ﻿using chat_net.models;
 using Npgsql;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
 namespace chat_net.services.SQL.UserHandler
@@ -42,13 +43,13 @@ namespace chat_net.services.SQL.UserHandler
         }
 
 
-        public static List<Message> GetMessages(string userID)
+        public static List<Message> GetMessages(string userID,string friendID)
         {
             try
             {
-                string query = $@"SELECT id, sender_id, receiver_id, content, timestamp
+                string query = $@"SELECT id, sender_id, receiver_id, content, type, timestamp
                                                     FROM Message
-                                                    WHERE sender_id = '{userID}' OR receiver_id = '{userID}'
+                                                    WHERE sender_id = '{userID}' AND receiver_id = '{friendID}' OR sender_id = '{friendID}' AND receiver_id = '{userID}'
                                                     ORDER BY timestamp ASC;";
 
                 using var connection = SQLConnection.GetConnection();
@@ -63,8 +64,9 @@ namespace chat_net.services.SQL.UserHandler
 
                 return messages;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine($"ex:: {ex.Message} * {ex.Source} * {ex.InnerException} * {ex.StackTrace} * {ex.StackTrace} * {ex.Data}");
                 return new List<Message>();
             }
         }

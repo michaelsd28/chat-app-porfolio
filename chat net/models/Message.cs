@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using System.Diagnostics;
 
 namespace chat_net.models
 {
@@ -21,17 +22,23 @@ namespace chat_net.models
         {
             List<Message> messages = new List<Message>();
 
+            Debug.WriteLine($"messages:: {reader.HasRows}");
+
+
             while (reader.Read())
             {
-                Message message = new Message();
-                message.id = reader["id"].ToString();
-                message.sender = reader["sender_id"].ToString();
-                message.receiver = reader["receiver_id"].ToString();
-                message.message = reader["message"].ToString();
-                message.timestamp = DateTime.Parse(reader["date"].ToString());
-                message.type = reader["type"].ToString();
 
-                messages.Add(message);
+
+
+                messages.Add(new Message
+                {
+                    id = reader["id"].ToString(),
+                    sender = reader["sender_id"].ToString(),
+                    receiver = reader["receiver_id"].ToString(),
+                    message = reader["content"].ToString(),
+                    timestamp = DateTime.Parse(reader["timestamp"].ToString()),
+                    type = reader["type"].ToString()
+                });
             }
 
             return messages;

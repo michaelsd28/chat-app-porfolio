@@ -6,6 +6,20 @@ namespace chat_net
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // allow cords for 3000
+
+            var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
+
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -28,6 +42,8 @@ namespace chat_net
 
 
             app.MapControllers();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.Run();
         }

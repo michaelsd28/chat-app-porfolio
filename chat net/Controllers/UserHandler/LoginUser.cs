@@ -8,19 +8,22 @@ namespace chat_net.Controllers.UserHandler
     public class LoginUser : Controller
     {
         [HttpPost("login/")]
-        public User? Index(LoginRequest loginUser)
+        public object Login([FromBody] LoginRequest loginUser)
         {
-            User isUserIn = LoginUserService.Login(loginUser);
-            if (isUserIn.username != "")
+            User? isUserIn = LoginUserService.Login(loginUser);
+            if (isUserIn != null)
             {
+
                 return isUserIn;
             }
             else
             {
-                return null;
+                //return 400
+                return new { status = 400, message = "Bad Request" };
             }
+
         }
-    
-        
+
+
     }
 }
