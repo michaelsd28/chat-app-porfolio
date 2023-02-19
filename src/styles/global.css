@@ -22,7 +22,7 @@ img {
 }
 
 .gradient-text {
-    font-size: 72px;
+    
     background: -webkit-linear-gradient(#44459c, #1d3457);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

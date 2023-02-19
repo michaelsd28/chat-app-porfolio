@@ -33,17 +33,20 @@
 .people-list .chat-list li {
     padding: 10px 15px;
     list-style: none;
-    border-radius: 10px
+    border-radius: 10px;
+    transition: 0.3s;
 }
 
 .people-list .chat-list li:hover {
-    background: #efefef6c;
-    cursor: pointer
+    background: #0311d642;
+    cursor: pointer;
+
+
 
 }
 
 .people-list .chat-list li.active {
-    background: #efefef69
+    background: #efefef41
 
 }
 
@@ -67,7 +70,7 @@
 }
 
 .people-list .status {
-    color: #999;
+
     font-size: 13px
 }
 
@@ -84,12 +87,15 @@
 
 .chat .chat-header .chat-about {
     float: left;
-    padding-left: 10px
+    padding-left: 10px;
+    color: rgba(0, 0, 0, 0.658);
 }
 
 .chat .chat-history {
     padding: 20px;
-    border-bottom: 2px solid #06273d59
+    border-bottom: 2px solid #06273d59;
+
+   height: 100%;
 }
 
 .chat .chat-history ul {
@@ -125,7 +131,7 @@
 }
 
 .chat .chat-history .message {
-    color: #444;
+
     padding: 18px 20px;
     line-height: 26px;
     font-size: 16px;
@@ -138,7 +144,7 @@
 
 .chat .chat-history .my-message {
     background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(147,230,241,1) 0%, rgba(145,192,241,1) 45.5% );
-    border-radius: 0px 20px 20px 20px;
+    border-radius: 20px 0px 20px 20px;
     padding: 10px 20px;
 }
 
@@ -147,7 +153,8 @@
 .chat .chat-history .other-message {
     background-image: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));
     text-align: right;
-    border-radius: 20px 0px 20px 20px;
+
+    border-radius: 0px 20px 20px 20px;
     padding: 10px 20px;
 
 }
@@ -182,6 +189,10 @@
     float: right
 }
 
+ul .clearfix{
+    margin: 5px;
+}
+
 .clearfix:after {
     visibility: hidden;
     display: block;
@@ -191,29 +202,7 @@
     height: 0
 }
 
-@media only screen and (max-width: 767px) {
-    .chat-app .people-list {
-        height: 465px;
-        width: 100%;
-        overflow-x: auto;
-        background: #fff;
-        left: -400px;
-        display: none
-    }
-    .chat-app .people-list.open {
-        left: 0
-    }
-    .chat-app .chat {
-        margin: 0
-    }
-    .chat-app .chat .chat-header {
-        border-radius: 0.55rem 0.55rem 0 0
-    }
-    .chat-app .chat-history {
-        height: 300px;
-        overflow-x: auto
-    }
-}
+
 
 
 ul {

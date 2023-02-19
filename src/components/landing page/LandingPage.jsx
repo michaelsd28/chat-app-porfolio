@@ -23,7 +23,6 @@ let containerStyle = {
   // backgroundImage:
   // linearGradientBackground2,
   borderRadius: 40,
-
 }
 let pageStyle = {
   zIndex: 0,
@@ -43,34 +42,34 @@ let imgStyle = {
 function LandingPage() {
   return (
     <PageAnimation>
-    <div style={pageStyle}>
-      <AnimatedBlob />
+      <div style={pageStyle}>
+        <AnimatedBlob />
 
-      <div style={containerStyle}>
+        <div style={containerStyle}>
+          {/* light/dark theme switcher on the top right */}
 
-        {/* light/dark theme switcher on the top right */}
+          <h1 className="gradient-text">Bienvenido a mi aplicacion de chat</h1>
 
-        <h1 className="gradient-text">Bienvenido a mi aplicacion de chat</h1>
-
-{/* img from assets folder  assets/chat-screenshot.png*/}
-        <img
-          style={imgStyle}
-          src={process.env.PUBLIC_URL + 'assets/chat-screenshot2.png'}
-          alt="chat screenshot"
-        />
-         <Link to="/login">
-        <Button
-        
-          startIcon={<TravelExploreIcon />}
-          variant="contained"
-          style={{ margin: 20, borderRadius: 20, background: buttonGradient }}
-        >
-        Iniciar session
-
-        </Button>
-        </Link>
+          <img
+            style={imgStyle}
+            src={process.env.PUBLIC_URL + 'assets/chat-screenshot.png'}
+            alt="chat screenshot"
+          />
+          <Link to="/login">
+            <Button
+              startIcon={<TravelExploreIcon />}
+              variant="contained"
+              style={{
+                margin: 20,
+                borderRadius: 20,
+                background: buttonGradient,
+              }}
+            >
+              Iniciar session
+            </Button>
+          </Link>
+        </div>
       </div>
-    </div>
     </PageAnimation>
   )
 }
