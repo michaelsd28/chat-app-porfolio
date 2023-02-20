@@ -5,6 +5,8 @@ import Lottie from 'lottie-react'
 function ChatHistory() {
   const { currentFriend, messageList, user } = React.useContext(dataContext)
 
+   
+
   return (
     <div className="chat-history">
       { messageList.length ===0 ?  (
@@ -24,7 +26,7 @@ function ChatHistory() {
           </div>
         </div>
       ) : (
-        <ul style={{ height: 400 }} className="m-b-0">
+        <ul style={{ height: 400,overflow:"auto" }} className="m-b-0 ul-message-history">
           {messageList.map((message) => {
             let isSender =
               message.sender === currentFriend.id
@@ -39,7 +41,7 @@ function ChatHistory() {
                 : user.image
 
             return (
-              <li className="clearfix">
+              <li className="clearfix" key={message.id}>
                 <img
                   style={{
                     borderRadius: 50,
@@ -53,7 +55,7 @@ function ChatHistory() {
                   alt="avatar"
                 />
                 <div
-                  style={{ position: 'relative',padding:"8px 20px 8px 20px" }}
+                  style={{ position: 'relative',padding:"8px 20px 8px 20px" ,maxWidth:"60%"}}
                   className={'message  ' + isSender}
                 >
                   <p style={{position:"relative",top:10}}>{message.message}</p>

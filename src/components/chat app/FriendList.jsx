@@ -48,6 +48,7 @@ function FriendList() {
             let isActive = currentFriend.name === friend.name ? 'active' : ''
             return (
               <li
+              key={friend.id}
                 onMouseEnter={() => {
                   setIsHoverFriend(true)
                   setHoverFriendId(friend.id)
