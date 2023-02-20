@@ -5,11 +5,9 @@ import Lottie from 'lottie-react'
 function ChatHistory() {
   const { currentFriend, messageList, user } = React.useContext(dataContext)
 
-   
-
   return (
     <div className="chat-history">
-      { messageList.length ===0 ?  (
+      {messageList.length === 0 ? (
         <div
           style={{
             display: 'flex',
@@ -26,8 +24,30 @@ function ChatHistory() {
           </div>
         </div>
       ) : (
-        <ul style={{ height: 400,overflow:"auto" }} className="m-b-0 ul-message-history">
+        <ul
+          style={{
+            height: 400,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            padding: 10,
+          }}
+          className="m-b-0 ul-message-history"
+        >
           {messageList.map((message) => {
+            // date format is like this: 2023-02-18T03:37:47 and we want to show it like this: 02-18 03:37:47 without the year
+
+            let date = new Date(message.timestamp)
+            let dateFormated =
+              date.toLocaleString('en-US', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+              }) +
+              ' ' +
+              date.toLocaleString('en-US', { month: '2-digit' }) +
+              '-' +
+              date.toLocaleString('en-US', { day: '2-digit' })
+
             let isSender =
               message.sender === currentFriend.id
                 ? ' my-message float-right '
@@ -55,10 +75,16 @@ function ChatHistory() {
                   alt="avatar"
                 />
                 <div
-                  style={{ position: 'relative',padding:"8px 20px 8px 20px" ,maxWidth:"60%"}}
+                  style={{
+                    position: 'relative',
+                    padding: '8px 20px 8px 20px',
+                    maxWidth: '60%',
+                  }}
                   className={'message  ' + isSender}
                 >
-                  <p style={{position:"relative",top:10}}>{message.message}</p>
+                  <p style={{ position: 'relative', top: 10 }}>
+                    {message.message}
+                  </p>
                   <p
                     style={{
                       position: 'absolute',
@@ -71,7 +97,7 @@ function ChatHistory() {
                     }}
                     className={floatDirection}
                   >
-                    {message.timestamp}
+                    {dateFormated}
                   </p>
                 </div>
               </li>
@@ -84,3 +110,12 @@ function ChatHistory() {
 }
 
 export default ChatHistory
+
+
+
+function TextMessage (){
+
+  return (
+   <p style={{position:'relative',top:10}}>{message.message}</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+
+}

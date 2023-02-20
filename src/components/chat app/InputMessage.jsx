@@ -34,6 +34,7 @@ function InputMessage() {
 
 
     if (event.key === 'Enter' && textInputValue.length > 0) {
+
       setMessageList([
         ...messageList,
         {
@@ -42,14 +43,22 @@ function InputMessage() {
           sender: user.id,
           receiber: currentFriend.id,
           type: 'text',
-          timestamp: new Date().toLocaleTimeString(),
+          timestamp: new Date().toJSON(),
         },
       ])
     
      
     let ws = new WebSocket('ws://127.0.0.1:5001')
     ws.onopen = () => {
-      ws.send(textInputValue)
+
+      let message = { 
+        sender: user.id,
+        receiver: currentFriend.id,
+        message: textInputValue,
+        type: 'text',
+        timestamp: new Date().toJSON(),
+      }
+      ws.send(JSON.stringify(message))
     }
       let input = document.querySelector('.input-chat')
       input.value = ''
@@ -87,6 +96,10 @@ function InputMessage() {
             >
               <IconButton
               onClick={() => {
+
+
+
+
                 setMessageList([
                   ...messageList,
                   {
@@ -95,7 +108,7 @@ function InputMessage() {
                     sender: user.id,
                     receiber: currentFriend.id,
                     type: 'text',
-                    timestamp: new Date().toLocaleTimeString(),
+                    timestamp: new Date().toJSON(),
                   },
                 ])
                 let input = document.querySelector('.input-chat')

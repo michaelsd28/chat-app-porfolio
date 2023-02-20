@@ -9,10 +9,10 @@ function GeneralContextProvider({ children }) {
   const [messageList, setMessageList] = useState([])
   const [currentFriend, setCurrentFriend] = useState({ isNull: true })
   const [webSocket, setWebSocket] = useState(null)
-  const [isLogin, setIsLogin] = useState(false)
+
   const userJson = JSON.parse(localStorage.getItem('user'))
   let credentials = {
-    username: userJson.username,
+    username: userJson.id,
   }
 
   React.useEffect(() => {
@@ -36,15 +36,16 @@ function GeneralContextProvider({ children }) {
       }
       ws.onmessage = (event) => {
         setMessageList((prev) => {
+          let message = JSON.parse(event.data)
           return [
             ...prev,
             {
-              id: prev.length,
-              message: event.data,
-              sender: currentFriend.id,
-              receiber: user.id,
-              type: 'text',
-              timestamp: new Date().toLocaleTimeString(),
+              id: message.id,
+              message: message.message,
+              sender: message.sender,
+              receiber: message.receiver,
+              type: message.type,
+              timestamp: message.timestamp,
             },
           ]
         })

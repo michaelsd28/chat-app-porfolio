@@ -61,6 +61,7 @@ function FriendList() {
                   setCurrentFriend(friend)
 
                   let messages = await fetchMessages(user.id, friend.id)
+  
                   setMessageList(messages)
                   console.log('calling fetchMessages - messages:: ')
                 }}
