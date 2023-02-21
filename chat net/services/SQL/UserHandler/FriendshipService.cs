@@ -8,7 +8,7 @@ namespace chat_net.services.SQL.UserHandler
     public class FriendshipService
     {
 
-        public static bool AddFriendship(string userID, string friendID)
+        public static List<FriendUser> AddFriendship(string userID, string friendID)
         {
             try
             {
@@ -25,11 +25,11 @@ namespace chat_net.services.SQL.UserHandler
                 connection.Close();
 
 
-                return true;
+                return FriendsService.GetFriendList(userID);
             }
             catch
             {
-                return false;
+                return new List<FriendUser>();
             }
 
 
@@ -39,8 +39,7 @@ namespace chat_net.services.SQL.UserHandler
 
             try {
        
-                string query = $@"DELETE FROM Friendship
-                                                  WHERE user_id = {userID} AND friend_id = {friendID};";
+                string query = $@"DELETE FROM public.friendship  WHERE user_id = '{userID}' AND friend_id = '{friendID}' OR user_id = '{friendID}' AND friend_id = '{userID}' ;";
 
                 using var connection = SQLConnection.GetConnection();
 

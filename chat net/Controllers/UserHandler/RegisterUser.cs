@@ -15,7 +15,7 @@ namespace chat_net.Controllers.UserHandler
 
             User? isHere = UserService.GetData_username(newUser.username);
 
-            if (isHere != null) return new { status = "400", Message = "invalid user" };
+            if (isHere != null) return new { status = "400", Message = "user is here" };
 
 
             RegisterUserService.register(newUser);

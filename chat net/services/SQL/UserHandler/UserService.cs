@@ -7,6 +7,38 @@ namespace chat_net.services.SQL.UserHandler
     public class UserService
     {
 
+        public static User? updateUser(UpdateUser updateUser) { 
+
+
+            User? user = null;
+
+            try
+            {
+                string query = $@"UPDATE users SET name = '{updateUser.name}', image = '{updateUser.image}' WHERE id = '{updateUser.id}';";
+
+                using var connection = SQLConnection.GetConnection();
+
+                using var cmd = new NpgsqlCommand(query, connection);
+
+                using NpgsqlDataReader reader = cmd.ExecuteReader();
+
+                connection.Close();
+
+                user = GetData(userID: updateUser.id);
+
+                return user;
+                
+
+            } catch
+            {
+                return user;
+            }
+        
+
+        
+        
+        }
+
         public static User? GetData(string userID)
         {
             User? user = new User();

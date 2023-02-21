@@ -8,23 +8,62 @@ namespace chat_net.Controllers.UserHandler
     {
 
         [HttpGet("get-friends/{userID}")]
-        public List<FriendUser> GetFriends(string userID)
+        public object GetFriends(string userID)
         {
-       
-            return  FriendsService.GetFriendList(userID);
+
+            try
+            {
+                return FriendsService.GetFriendList(userID);
+
+            }
+            catch
+            {
+
+
+                return new { status = 400 };
+
+            }
+
+
 
         }
 
         [HttpPost("add-friend/{userID}/{friendID}")]
-        public void AddFriend(string userID, string friendID)
+        public object AddFriend(string userID, string friendID)
         {
-            FriendshipService.AddFriendship(userID, friendID);
+
+            List<FriendUser> friendList = FriendshipService.AddFriendship(userID, friendID);
+
+            if (friendList.Count == 0)
+            {
+                return new { status = 400 };
+            }
+            else
+            {
+                return friendList;
+            }
         }
 
         [HttpPost("remove-friend/{userID}/{friendID}")]
-        public void RemoveFriend(string userID, string friendID)
+        public object RemoveFriend(string userID, string friendID)
         {
-            FriendshipService.RemoveFriendShip(userID, friendID);
+            try
+            {
+
+                FriendshipService.RemoveFriendShip(userID, friendID);
+
+                return new { status = 200 };
+
+            }
+            catch
+            {
+
+
+
+                return new { status = 400 };
+
+            }
+
         }
 
 
