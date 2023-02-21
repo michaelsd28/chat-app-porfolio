@@ -24,7 +24,7 @@ export default function BasicModal({
   isModalOpen,
   setIsModalOpen,
   modalFunction,
-  content
+  content,
 }) {
   const handleOpen = () => setIsModalOpen(true)
   const handleClose = () => setIsModalOpen(false)
@@ -38,16 +38,15 @@ export default function BasicModal({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-         {content}
+          {content}
           <div className="d-flex justify-content-center">
             <Button
-
               variant="contained"
               color="success"
-              style={{ margin: 10,borderRadius:10 }}
+              style={{ margin: 10, borderRadius: 10 }}
               onClick={async () => {
                 handleClose(false)
-                await modalFunction();
+                await modalFunction()
               }}
             >
               Yes
@@ -55,7 +54,8 @@ export default function BasicModal({
             <Button
               variant="contained"
               color="error"
-              style={{ margin: 10,borderRadius:10 }}
+              type="submit"
+              style={{ margin: 10, borderRadius: 10 }}
               onClick={() => {
                 handleClose(false)
               }}

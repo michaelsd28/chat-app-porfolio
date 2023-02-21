@@ -6,7 +6,6 @@ function FriendList() {
   const [isHoverFriend, setIsHoverFriend] = React.useState(false)
   const [hoverFriendId, setHoverFriendId] = React.useState(null)
 
-
   const {
     friendList,
     currentFriend,
@@ -21,12 +20,13 @@ function FriendList() {
     setFriendList(newFriendList)
     setMessageList([])
 
-    let response = await fetch(`https://localhost:7280/remove-friend/${user.id}/${friendId}`, {
-      method: 'POST',
-    })
+    let response = await fetch(
+      `https://localhost:7280/remove-friend/${user.id}/${friendId}`,
+      {
+        method: 'POST',
+      },
+    )
     let data = await response.json()
-
-    alert(JSON.stringify(data))
 
     if (data.status === 400) {
       alert('Error al eliminar amigo')
@@ -41,7 +41,7 @@ function FriendList() {
       style={{ overflow: 'auto' }}
       className="list-unstyled chat-list mt-2 mb-0"
     >
-      {friendList.length === 0 ?  (
+      {friendList.length === 0 ? (
         <div
           style={{
             borderRadius: 20,
@@ -146,4 +146,3 @@ async function fetchMessages(id1, id2) {
   let data = await response.json()
   return data
 }
-
