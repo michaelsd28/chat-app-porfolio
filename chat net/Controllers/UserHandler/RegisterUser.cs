@@ -1,20 +1,46 @@
 ﻿using chat_net.models;
 using chat_net.services.SQL;
+using chat_net.services.SQL.UserHandler;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace chat_net.Controllers.UserHandler
 {
     public class RegisterUser : Controller
     {
         [HttpPost("register-user")]
-        public User Index(User newUser)
+        public  object Index([FromBody] User newUser)
         {
-            string query = $"INSERT INTO users (name, username, password, image) VALUES ('{newUser.name}','{newUser.username}', '{newUser.password}', '{newUser.image}');";
-            SQLConnection.ExecuteNonQueryStatement(query);
-            return newUser;
+
+            User? isHere = UserService.GetData_username(newUser.username);
+
+            if (isHere != null) return new { status = "400", Message = "invalid user" };
+
+
+            RegisterUserService.register(newUser);
+
+
+            User? user = UserService.GetData_username(newUser.username);
+
+            if (user != null)
+            {
+
+                return user;
+            }
+            else
+            {
+
+                return new { status = "400", Message = "invalid user" };
+            }
+
+
+        }
+      
+
+
         }
 
-     
+
     }
-}
+

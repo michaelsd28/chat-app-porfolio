@@ -35,20 +35,7 @@ namespace chat_net.models
 
         }
 
-        /*
-         command to create sql table id is auto increment for posgress and is primary key
-        
-        CREATE TABLE users (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(255) ,
-            username VARCHAR(255) ,
-            password VARCHAR(255) ,
-            image VARCHAR(255) ,
-            friends VARCHAR(255) 
-        );
-        
-         
-         */
+   
 
 
     }

@@ -6,27 +6,61 @@ namespace chat_net.services.SQL.UserHandler
 {
     public class RegisterUserService
     {
-        public bool Register(User newUser)
+        internal static bool register(User newUser)
         {
-
             try
             {
-                string query = $"INSERT INTO users (name, username, password, image) VALUES ('{newUser.name}','{newUser.username}', '{newUser.password}', '{newUser.image}');";
-                SQLConnection.ExecuteNonQueryStatement(query);
-                return true;
+
+
+
+                User? isRegister = UserService.GetData_username(username: newUser.username);
+
+
+
+                if (isRegister == null)
+                {
+
+                    Debug.WriteLine($"registered:: ");
+
+                    string query = $@"INSERT INTO users (name, username, password, image) VALUES ('{newUser.name}','{newUser.username}', '{newUser.password}', '{newUser.image}');";
+
+
+                    using var connection = SQLConnection.GetConnection();
+
+
+                    using var cmd = new NpgsqlCommand(query, connection);
+
+
+                    using NpgsqlDataReader reader = cmd.ExecuteReader();
+
+
+
+                    connection.Close();
+
+                    return true;
+
+
+
+
+                }
+                else
+                {
+
+                    return true;
+
+                }
+
+
+
+
+
             }
             catch
             {
                 return false;
             }
-
-
-
-
-
-
-
-
         }
+
+
     }
 }

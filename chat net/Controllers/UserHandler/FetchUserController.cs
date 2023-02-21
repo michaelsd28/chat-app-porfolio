@@ -10,11 +10,11 @@ namespace chat_net.Controllers.UserHandler
         [HttpGet("get-user/{userID}")]
         public object Index(string userID)
         {
-            User? user = UserService.GetData(userID);
+            User? user = UserService.GetData(userID: userID);
   
             if (user != null)
             {
-                Debug.WriteLine($"GetUserFromReader:: {user.id} * {user.name} * {user.image}");
+          
                 return user;
             }
             else
