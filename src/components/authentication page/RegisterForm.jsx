@@ -185,6 +185,7 @@ async function RegisterUser(newUser, setLoading) {
   ) {
     alert('todos los campos son obligatorios')
     return
+    
   }
 
   let response = await fetch('https://localhost:7280/register-user/', {
