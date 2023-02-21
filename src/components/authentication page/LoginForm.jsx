@@ -58,6 +58,8 @@ function LoginForm() {
 export default LoginForm
 
 async function HandleLoginForm(event, { username, password }) {
+
+  try {
   event.preventDefault()
 
   let url = 'https://localhost:7280/login/'
@@ -85,4 +87,8 @@ async function HandleLoginForm(event, { username, password }) {
   }
 
   return userResponse
+} catch (error) {
+
+  alert('Error al iniciar sesión', error)
+}
 }

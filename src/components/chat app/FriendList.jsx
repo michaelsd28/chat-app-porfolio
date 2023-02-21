@@ -6,6 +6,7 @@ function FriendList() {
   const [isHoverFriend, setIsHoverFriend] = React.useState(false)
   const [hoverFriendId, setHoverFriendId] = React.useState(null)
 
+
   const {
     friendList,
     currentFriend,
@@ -15,10 +16,24 @@ function FriendList() {
     setFriendList,
   } = React.useContext(dataContext)
 
-  function removeFriend(id) {
-    let newFriendList = friendList.filter((friend) => friend.id !== id)
+  async function removeFriend(friendId) {
+    let newFriendList = friendList.filter((friend) => friend.id !== friendId)
     setFriendList(newFriendList)
     setMessageList([])
+
+    let response = await fetch(`https://localhost:7280/remove-friend/${user.id}/${friendId}`, {
+      method: 'POST',
+    })
+    let data = await response.json()
+
+    alert(JSON.stringify(data))
+
+    if (data.status === 400) {
+      alert('Error al eliminar amigo')
+    } else {
+      alert('Amigo eliminado')
+    }
+    return data
   }
 
   return (
@@ -131,3 +146,4 @@ async function fetchMessages(id1, id2) {
   let data = await response.json()
   return data
 }
+

@@ -5,8 +5,7 @@ import { Tooltip } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import EditIcon from '@mui/icons-material/Edit'
 import BasicModal from '../Single components/BasicModal'
-
-
+import { dataContext } from '../../GlobalStore/GeneralContext'
 
 let inputStyle = {
   background: 'rgba(255, 255, 255, 0.5)',
@@ -22,6 +21,9 @@ let inputStyle = {
 
 function UserHeroCard({ user }) {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [friendId, setFriendId] = React.useState('')
+  const {setFriendList} = React.useContext(dataContext)
+
   return (
     <div
       className="card d-flex justify-content-center align-items-center"
@@ -36,11 +38,27 @@ function UserHeroCard({ user }) {
       <BasicModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        modalFunction={() => alert('hola')}
+        modalFunction={async () => await AddFriend(user.id, friendId,setFriendList)}
         content={
-          <div style={{ display: 'flex', flexDirection: 'column',justifyContent:"center",justifyItems:"center",alignContent:"center",alignItems:"center" }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              justifyItems: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <h4>Add friend</h4>
-            <input style={inputStyle} type="text" placeholder="Enter id" />
+            <input
+              onKeyUp={(event) => {
+                setFriendId(event.target.value)
+              }}
+              style={inputStyle}
+              type="text"
+              placeholder="Enter id"
+            />
           </div>
         }
       />
@@ -93,3 +111,37 @@ function UserHeroCard({ user }) {
 }
 
 export default UserHeroCard
+
+async function AddFriend(userId, friendId,setFriendList) {
+
+
+
+  let response = await fetch(
+    `https://localhost:7280/add-friend/${userId}/${friendId}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  )
+
+  let userResponse = await response.json()
+
+  if (userResponse['status'] === 400) {
+    alert('Usuario  incorrectos')
+  } else {
+    alert('Usuario agregado')
+    setFriendList(userResponse)
+  }
+
+
+
+
+
+
+
+
+
+   
+}
