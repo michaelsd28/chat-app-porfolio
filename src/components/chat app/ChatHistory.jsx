@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react'
 import { dataContext } from '../../GlobalStore/GeneralContext'
 import selectChat from '../chat app/assets/select-chat.json'
@@ -79,12 +80,19 @@ function ChatHistory() {
                     position: 'relative',
                     padding: '8px 20px 8px 20px',
                     maxWidth: '60%',
+                    marginBottom: 15,
                   }}
                   className={'message  ' + isSender}
                 >
-                  <p style={{ position: 'relative', top: 10 }}>
-                    {message.message}
-                  </p>
+                  {message.type === 'text' ? (
+                    <TextMessage text={message.message} />
+                  ) : (
+                    <AudioMessage audio={message.message} />
+                  )}
+                  {message.type === 'image' && (
+                    <ImageMessage image={message.message} />
+                  )}
+
                   <p
                     style={{
                       position: 'absolute',
@@ -111,11 +119,43 @@ function ChatHistory() {
 
 export default ChatHistory
 
+function TextMessage({ text }) {
+  return <p style={{ position: 'relative', top: 10 }}>{text}</p>
+}
 
-
-function TextMessage (){
+function ImageMessage({ image }) {
+  let baseUrl = 'https://localhost:7280/get-file/'
 
   return (
-   <p style={{position:'relative',top:10}}>{message.message}</p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div>
+    <div style={{ position: 'relative', top: 5 }}>
+      <img
+        style={{
+          borderRadius: 20,
+          backgroundColor: 'rgba(138, 138, 138, 0)',
+          maxHeight: 200, 
+        }}
+        src={baseUrl + image}
+        alt="image"
+      />
+    </div>
+  )
+}
 
+function AudioMessage({ audio }) {
+  let baseUrl = 'https://localhost:7280/get-file/'
+
+  return (
+    <div style={{ position: 'relative', top: 5 }}>
+      <audio
+        style={{
+          borderRadius: 20,
+          backgroundColor: 'rgba(138, 138, 138, 0)',
+          maxHeight: 40,
+        }}
+        controls
+      >
+        <source src={baseUrl + audio} type="audio/wav" />
+      </audio>
+    </div>
+  )
 }

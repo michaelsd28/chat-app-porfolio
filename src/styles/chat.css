@@ -1,4 +1,27 @@
 
+
+
+
+/* animate all incomming li elements */
+
+li {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: animate-incoming 0.5s ease-out forwards;
+    transition: all 0.5s ease-out;
+}
+
+@keyframes animate-incoming {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .card {
 
     transition: .5s;
@@ -148,7 +171,12 @@
     padding: 10px 20px;
 }
 
-
+audio::-webkit-media-controls-play-button,
+ audio::-webkit-media-controls-panel {
+ background-color: rgba(138, 138, 138, 0);
+ color: red;
+ 
+ }
 
 .chat .chat-history .other-message {
     background-image: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));

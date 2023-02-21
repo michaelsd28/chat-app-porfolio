@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useParams } from 'react-router-dom'
 import '../../styles/chat.css'
 import PageAnimation from '../Page animation/PageAnimation'
@@ -29,40 +29,36 @@ function MainChat() {
 
   // let { username } = useParams()
 
-
-
-
   React.useEffect(() => {
-
     const fetchData = async () => {
       let data = await fetchUser(userJson.id)
       setUser(data)
       setFriendList(data.friends)
     }
 
-
     let localUser = localStorage.getItem('user')
     let userJson = JSON.parse(localUser)
 
-  if (localUser === null) {
-  window.location.href = '/login'
-  }
+    if (localUser === null) {
+      window.location.href = '/login'
+    }
 
-
-
+  
+      
+    
+  
 
     fetchData().catch((err) =>
       console.log('MainChat - fetchData - err:: ', err),
     )
 
     return () => {
-  console.log("MainChat - useEffect - return:: ", "")
+      console.log('MainChat - useEffect - return:: ', '')
     }
   }, [])
 
   return (
     <PageAnimation>
-      {' '}
       <div style={containerStyle}>
         <div className="container  d-flex flex-column">
           <div className="row clearfix ">

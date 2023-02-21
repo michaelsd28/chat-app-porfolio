@@ -26,21 +26,18 @@ function FriendList() {
       style={{ overflow: 'auto' }}
       className="list-unstyled chat-list mt-2 mb-0"
     >
-      {friendList.length === 0 ? (
+      {friendList.length === 0 ?  (
         <div
           style={{
             borderRadius: 20,
             background:
-            'linear-gradient( 109.6deg,  rgba(61,245,167,1) 11.2%, rgba(9,111,224,1) 91.1% )',
-          color: 'rgba(0, 0, 0, 0.921)',
+              'linear-gradient( 109.6deg,  rgba(61,245,167,1) 11.2%, rgba(9,111,224,1) 91.1% )',
+            color: 'rgba(0, 0, 0, 0.921)',
             display: 'flex',
             justifyContent: 'center',
-       
-
-
           }}
         >
-          <h6 style={{marginTop:10}}>Please add a friend</h6>
+          <h6 style={{ marginTop: 10 }}>Please add a friend</h6>
         </div>
       ) : (
         <div>
@@ -48,7 +45,7 @@ function FriendList() {
             let isActive = currentFriend.name === friend.name ? 'active' : ''
             return (
               <li
-              key={friend.id}
+                key={friend.id}
                 onMouseEnter={() => {
                   setIsHoverFriend(true)
                   setHoverFriendId(friend.id)
@@ -60,8 +57,11 @@ function FriendList() {
                 onClick={async () => {
                   setCurrentFriend(friend)
 
+                  localStorage.setItem('currentFriend', JSON.stringify(friend))
+
                   let messages = await fetchMessages(user.id, friend.id)
-  
+                  // remove first message from list
+
                   setMessageList(messages)
                   console.log('calling fetchMessages - messages:: ')
                 }}

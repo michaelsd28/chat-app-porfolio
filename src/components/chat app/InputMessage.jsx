@@ -10,12 +10,15 @@ import { dataContext } from '../../GlobalStore/GeneralContext'
 function InputMessage() {
   const [isTexting, setIsTexting] = React.useState(false)
   const [isRecording, setIsRecording] = React.useState(false)
-  const { messageList, setMessageList, currentFriend, user,webSocket } = React.useContext(
-    dataContext,
-  )
+  const {
+    messageList,
+    setMessageList,
+    currentFriend,
+    user,
+    webSocket,
+  } = React.useContext(dataContext)
 
   const [textInputValue, setTextInputValue] = React.useState('')
-
 
   React.useEffect(() => {
     if (textInputValue.length > 0) {
@@ -26,32 +29,30 @@ function InputMessage() {
     return () => {}
   }, [textInputValue])
 
-
   function handleTexting(event) {
     setTextInputValue(event.target.value)
 
-
-
-
     if (event.key === 'Enter' && textInputValue.length > 0) {
+      sendTextMessage()
+    }
+  }
 
-      setMessageList([
-        ...messageList,
-        {
-          id: messageList.length,
-          message: textInputValue,
-          sender: user.id,
-          receiber: currentFriend.id,
-          type: 'text',
-          timestamp: new Date().toJSON(),
-        },
-      ])
-    
-     
+  function sendTextMessage() {
+    setMessageList([
+      ...messageList,
+      {
+        id: messageList.length,
+        message: textInputValue,
+        sender: user.id,
+        receiber: currentFriend.id,
+        type: 'text',
+        timestamp: new Date().toJSON(),
+      },
+    ])
+
     let ws = new WebSocket('ws://127.0.0.1:5001')
     ws.onopen = () => {
-
-      let message = { 
+      let message = {
         sender: user.id,
         receiver: currentFriend.id,
         message: textInputValue,
@@ -60,10 +61,9 @@ function InputMessage() {
       }
       ws.send(JSON.stringify(message))
     }
-      let input = document.querySelector('.input-chat')
-      input.value = ''
-      setTextInputValue('')
-    }
+    let input = document.querySelector('.input-chat')
+    input.value = ''
+    setTextInputValue('')
   }
 
   React.useEffect(() => {
@@ -79,7 +79,7 @@ function InputMessage() {
     <div className="chat-message clearfix">
       <div className="input-group mb-0">
         <input
-      disabled={currentFriend.isNull || isRecording}
+          disabled={currentFriend.isNull || isRecording}
           spellCheck="false"
           onKeyUp={handleTexting}
           style={{ borderRadius: '20px' }}
@@ -95,26 +95,9 @@ function InputMessage() {
               className="input-group-prepend"
             >
               <IconButton
-              onClick={() => {
-
-
-
-
-                setMessageList([
-                  ...messageList,
-                  {
-                    id: messageList.length,
-                    message: textInputValue,
-                    sender: user.id,
-                    receiber: currentFriend.id,
-                    type: 'text',
-                    timestamp: new Date().toJSON(),
-                  },
-                ])
-                let input = document.querySelector('.input-chat')
-                input.value = ''
-                setTextInputValue('')
-              }}
+                onClick={() => {
+                  sendTextMessage()
+                }}
                 style={{
                   background:
                     'radial-gradient( circle farthest-corner at 10% 20%,  rgba(90,92,106,1) 0%, rgba(32,45,58,1) 81.3% )',

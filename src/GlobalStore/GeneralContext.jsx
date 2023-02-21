@@ -10,7 +10,7 @@ function GeneralContextProvider({ children }) {
   const [currentFriend, setCurrentFriend] = useState({ isNull: true })
   const [webSocket, setWebSocket] = useState(null)
 
-  const userJson = JSON.parse(localStorage.getItem('user'))
+  const userJson = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : {}
   let credentials = {
     username: userJson.id,
   }
@@ -35,8 +35,21 @@ function GeneralContextProvider({ children }) {
         ws.send(JSON.stringify(credentials))
       }
       ws.onmessage = (event) => {
+        let message = JSON.parse(event.data)
+
+        let friendString = localStorage.getItem('currentFriend') ? localStorage.getItem('currentFriend') : '{}'
+        let friendJson = JSON.parse(friendString)
+
+      
+
+        let isCurrentFriend =
+          message.receiver === friendJson.id || message.sender === friendJson.id
+
+        if (!isCurrentFriend) {
+          return
+        }
+
         setMessageList((prev) => {
-          let message = JSON.parse(event.data)
           return [
             ...prev,
             {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/global.css";
 
@@ -15,7 +15,9 @@ let webStyle = {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+ 
   <div style={webStyle}>
     <App />
   </div>
+
 );
