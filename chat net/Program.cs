@@ -1,5 +1,6 @@
 using chat_net.Controllers.UserHandler;
 using chat_net.models;
+using chat_net.services.WebsocketService;
 using Fleck;
 using System.Diagnostics;
 using System.Net.Sockets;
@@ -73,11 +74,12 @@ namespace chat_net
                 };
                 socket.OnMessage = message =>
                 {
+                    Debug.WriteLine($"socket.OnMessage = message => {message} ----");
                     try
                     {
-                        Debug.WriteLine($"received:: {message}");
-                        HandleLoginUser(message,socketList, socket);
-                        HandleIncommingMessage(socketList, message);
+                  
+                        WebsocketService.HandleLoginUser(message,socketList, socket);
+                        WebsocketService. HandleIncommingMessage(socketList, message);
 
                  
                     }
@@ -93,69 +95,8 @@ namespace chat_net
             app.Run();
         }
 
-        private static void HandleIncommingMessage(Dictionary<string, IWebSocketConnection> socketList, string message)
-        {
+      
 
-            try {
-
-                Message? clientMessage = JsonSerializer.Deserialize<Message>(message);
-
-                if (clientMessage != null)
-                {
-
-                    string receiver = clientMessage.receiver;
-                    string sender = clientMessage.sender;
-
-                    Debug.WriteLine($"receiver:: {receiver} * sender:: {sender}");
-
-                    if (socketList.ContainsKey(receiver))
-                    {
-                        socketList[receiver].Send(message);
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"receiver not found {receiver}");
-                    }
-
-
-
-                }
-
-           
-
-            }
-            catch (Exception ex)
-            {
-
-                Debug.WriteLine($"HandleIncomingMessage:: ex:: {ex}");
-
-            }
-        }
-
-        private static void HandleLoginUser(string message, Dictionary<string, IWebSocketConnection> socketList, IWebSocketConnection clientSocket )
-        {
-
-            try {
-
-            Dictionary<string, string>? credentials = JsonSerializer.Deserialize<Dictionary<string, string>>(message);
-
-            Debug.WriteLine($"HandleLoginUser - - - credentials:: {credentials}");
-
-            if (credentials != null) {
-                string user = credentials["username"];
-                socketList[user] = clientSocket;
-                    return;
-            }
-
-            }
-            catch {
-
-
-                Debug.WriteLine("---- unable to Deserialize ----");
-
-         
-            }
-
-        }
+   
     }
 }

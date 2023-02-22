@@ -15,56 +15,63 @@ namespace chat_net.Controllers.FileHandler
         }
 
         [HttpPost("upload-file2")]
-        public Task<bool> UploadFile()
+        public object UploadFile()
         {
-            //Variable que retorna el valor del resultado del metodo
-            //El valor predeterminado es Falso (false)
-            bool resultado = false;
-
-            //La variable "file" recibe el archivo en el objeto Request.Form
-            //Del POST que realiza la aplicacion a este servicio.
-            //Se envia un formulario completo donde uno de los valores es el archivo
-            IFormFile file = Request.Form.Files[0];
-
-     
-
-    
-
-
-
-            //Se valida si la variable "file" tiene algun archivo
-            if (file.Length > 0)
+            string? fileID = string.Empty;
+            try
             {
-                //Se declara en esta variable el nombre del archivo cargado
-                string NombreArchivo = file.FileName;
 
-                //Se declara en esta variable la ruta completa con el nombre del archivo
-                string RutaFullCompleta = Path.Combine( NombreArchivo);
 
-                //Se crea una variable FileStream para carlo en la ruta definida
-                using (var stream = new FileStream(RutaFullCompleta, FileMode.Create))
+
+                IFormFile file = Request.Form.Files[0];
+
+
+
+
+                if (file.Length > 0)
                 {
-                    file.CopyTo(stream);
 
-                    //Como se cargo correctamente el archivo
-                    //la variable "resultado" llena el valor "true"
-
-         
+                    string FileName = file.FileName;
 
 
+                    string fullRoute = Path.Combine(FileName);
 
 
-                    resultado = true;
+                    using (var stream = new FileStream(fullRoute, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+
+                    }
+
+                    byte[] bytes = System.IO.File.ReadAllBytes(fullRoute);
+
+                    fileID = FileService.SaveFile(new SQLFile() { FileName = FileName, FileData = bytes });
+
+                    /// delete file after finished
+
+                    System.IO.File.Delete(fullRoute);
+
+                    if (fileID == null)
+                    {
+                        return new { status = 400 };
+                    }
+
                 }
 
-                byte[] bytes = System.IO.File.ReadAllBytes(RutaFullCompleta);
+                //Se retorna la variable "resultado" como resultado de una tarea
+                return new
+                {
 
-                FileService.SaveFile(new SQLFile() { FileName = NombreArchivo, FileData = bytes });
+                    id = fileID
+                };
 
             }
+            catch
+            {
 
-            //Se retorna la variable "resultado" como resultado de una tarea
-            return Task.FromResult(resultado);
+
+                return new { status = 400 };
+            }
 
         }
 

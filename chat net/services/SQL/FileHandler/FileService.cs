@@ -4,47 +4,55 @@ using Npgsql;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net.NetworkInformation;
 using System.IO;
+using System.Diagnostics;
+using Npgsql.Internal.TypeHandlers;
 
 namespace chat_net.services.SQL.FileHandler
 {
     public class FileService
     {
 
-        public static string SaveFile(SQLFile file)
+        public static string? SaveFile(SQLFile file)
         {
-            String fileID = "invalid operation";
+
+            Guid randomID = Guid.NewGuid();
             try
             {
 
                 var connection = SQLConnection.GetConnection();
 
-                string query = "INSERT INTO files (   filename,filedata) VALUES (@file_name, @file_data)";
+                string query = "INSERT INTO files (   id,filename,filedata) VALUES (@id,@file_name, @file_data)";
 
                 using (var command = new NpgsqlCommand(query, connection))
                 {
 
                     command.Parameters.AddWithValue("file_name", file.FileName);
                     command.Parameters.AddWithValue("file_data", file.FileData);
+                    command.Parameters.AddWithValue("id", randomID.ToString());
 
-                 
+
 
                     var reader = command.ExecuteReader();
 
-                    while (reader.Read())
-                    {
-                        fileID = reader["id"].ToString();
-                    }
 
+
+
+
+
+                    return randomID.ToString();   
                 }
 
 
-                return fileID;
+         
             }
             catch
             {
-                return fileID;
+                return null;
             }
         }
+
+
+
 
         internal static FileStreamResult? GetFile(string fileID)
         {

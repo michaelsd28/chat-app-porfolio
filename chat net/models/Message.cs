@@ -5,11 +5,7 @@ namespace chat_net.models
 {
     public class Message
     {
-        //    var sender: String = ""
-        //var receiver: String = ""
-        //var message: String = ""
-        //var timestamp: String = ""
-        //var type: String = ""
+
 
         public string id { get; set; } = "";
         public string sender { get; set; } = "";

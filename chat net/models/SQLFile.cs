@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 using System.Diagnostics;
 using System.IO;
 
@@ -11,6 +12,8 @@ namespace chat_net.models
         public int id { get; set; } = 0;
         public string FileName { get; set; } = "";
         public byte[] FileData { get; set; } = { byte.MinValue };
+
+ 
 
         internal static FileStreamResult? GetFileFromReader(Npgsql.NpgsqlDataReader reader )
         {
