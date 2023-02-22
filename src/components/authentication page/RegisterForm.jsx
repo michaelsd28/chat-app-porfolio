@@ -204,8 +204,9 @@ async function RegisterUser(newUser, setLoading) {
 
     return;
   } else {
-    alert('usuario creado')
+
     let userJson = await fetchUser(user.id)
+    alert(`usuario creado ${userJson.id}`)
     localStorage.setItem('user', JSON.stringify(userJson))
     window.location.href = '/chat/'+userJson.username
     return
