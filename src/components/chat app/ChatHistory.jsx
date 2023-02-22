@@ -3,8 +3,12 @@ import React from 'react'
 import { dataContext } from '../../GlobalStore/GeneralContext'
 import selectChat from '../chat app/assets/select-chat.json'
 import Lottie from 'lottie-react'
+import useRecorder from '../../custom hooks/useRecorder'
+import EmptyModal from '../Single components/EmptyModal'
 function ChatHistory() {
   const { currentFriend, messageList, user } = React.useContext(dataContext)
+
+
 
   return (
     <div className="chat-history">
@@ -16,6 +20,7 @@ function ChatHistory() {
             position: 'relative',
           }}
         >
+
           <div style={{ position: 'relative', width: 450, height: 450 }}>
             <Lottie
               className="image-cropped-calc"
@@ -34,8 +39,9 @@ function ChatHistory() {
           }}
           className="m-b-0 ul-message-history"
         >
-          {messageList.map((message) => {
+          { messageList.map((message) => {
             // date format is like this: 2023-02-18T03:37:47 and we want to show it like this: 02-18 03:37:47 without the year
+
 
             let date = new Date(message.timestamp)
             let dateFormated =
@@ -132,7 +138,7 @@ function ImageMessage({ image }) {
         style={{
           borderRadius: 20,
           backgroundColor: 'rgba(138, 138, 138, 0)',
-          maxHeight: 200, 
+          maxHeight: 200,
         }}
         src={baseUrl + image}
         alt="image"
@@ -142,7 +148,9 @@ function ImageMessage({ image }) {
 }
 
 function AudioMessage({ audio }) {
-  let baseUrl = 'https://localhost:7280/get-file/'
+  let audioURL = `https://localhost:7280/get-file/${audio}`
+
+ 
 
   return (
     <div style={{ position: 'relative', top: 5 }}>
@@ -154,7 +162,8 @@ function AudioMessage({ audio }) {
         }}
         controls
       >
-        <source src={baseUrl + audio} type="audio/wav" />
+        
+        <source src={audioURL} type="audio/wav" />
       </audio>
     </div>
   )

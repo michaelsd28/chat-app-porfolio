@@ -6,6 +6,7 @@ function FriendList() {
   const [isHoverFriend, setIsHoverFriend] = React.useState(false)
   const [hoverFriendId, setHoverFriendId] = React.useState(null)
 
+
   const {
     friendList,
     currentFriend,
@@ -13,6 +14,7 @@ function FriendList() {
     setMessageList,
     user,
     setFriendList,
+  
   } = React.useContext(dataContext)
 
   async function removeFriend(friendId) {
@@ -36,11 +38,19 @@ function FriendList() {
     return data
   }
 
+
+
+
+
+
+  
+
   return (
     <ul
       style={{ overflow: 'auto' }}
       className="list-unstyled chat-list mt-2 mb-0"
     >
+             
       {friendList.length === 0 ? (
         <div
           style={{
@@ -53,6 +63,7 @@ function FriendList() {
           }}
         >
           <h6 style={{ marginTop: 10 }}>Please add a friend</h6>
+
         </div>
       ) : (
         <div>
@@ -70,6 +81,7 @@ function FriendList() {
                   setHoverFriendId(null)
                 }}
                 onClick={async () => {
+
                   setCurrentFriend(friend)
 
                   localStorage.setItem('currentFriend', JSON.stringify(friend))
@@ -78,7 +90,10 @@ function FriendList() {
                   // remove first message from list
 
                   setMessageList(messages)
-                  console.log('calling fetchMessages - messages:: ')
+            
+   
+                  
+   
                 }}
                 style={{ position: 'relative' }}
                 className={`clearfix ${isActive}`}

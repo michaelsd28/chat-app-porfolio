@@ -9,8 +9,11 @@ function GeneralContextProvider({ children }) {
   const [messageList, setMessageList] = useState([])
   const [currentFriend, setCurrentFriend] = useState({ isNull: true })
   const [webSocket, setWebSocket] = useState(null)
+  const [isReceiving, setIsReceiving] = useState(false)
 
-  const userJson = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : {}
+  const userJson = JSON.parse(localStorage.getItem('user'))
+    ? JSON.parse(localStorage.getItem('user'))
+    : {}
   let credentials = {
     username: userJson.id,
   }
@@ -20,7 +23,6 @@ function GeneralContextProvider({ children }) {
 
     let messageHistory = document.querySelector('.ul-message-history')
     if (messageHistory) {
-      messageHistory.style.transition = 'all 0.5s ease-in-out'
       messageHistory.scrollTop = messageHistory.scrollHeight
     }
 
@@ -37,31 +39,28 @@ function GeneralContextProvider({ children }) {
       ws.onmessage = (event) => {
         let message = JSON.parse(event.data)
 
-        let friendString = localStorage.getItem('currentFriend') ? localStorage.getItem('currentFriend') : '{}'
+        let friendString = localStorage.getItem('currentFriend')
+          ? localStorage.getItem('currentFriend')
+          : '{}'
         let friendJson = JSON.parse(friendString)
 
-      
 
-        let isCurrentFriend =
-          message.receiver === friendJson.id || message.sender === friendJson.id
 
-        if (!isCurrentFriend) {
-          return
+        if (message.sender === friendJson.id) {
+          setMessageList((prev) => {
+            return [
+              ...prev,
+              {
+                id: message.id,
+                message: message.message,
+                sender: message.sender,
+                receiver: message.receiver,
+                type: message.type,
+                timestamp: message.timestamp,
+              },
+            ]
+          })
         }
-
-        setMessageList((prev) => {
-          return [
-            ...prev,
-            {
-              id: message.id,
-              message: message.message,
-              sender: message.sender,
-              receiber: message.receiver,
-              type: message.type,
-              timestamp: message.timestamp,
-            },
-          ]
-        })
 
         console.log(
           'GeneralContextProvider - useEffect - ws.onmessage:: ',
@@ -94,6 +93,8 @@ function GeneralContextProvider({ children }) {
         setIsDarkTheme,
         currentFriend,
         setCurrentFriend,
+        setIsReceiving,
+        isReceiving
       }}
     >
       {children}

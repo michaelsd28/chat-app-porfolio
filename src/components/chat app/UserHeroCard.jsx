@@ -7,6 +7,8 @@ import EditIcon from '@mui/icons-material/Edit'
 import BasicModal from '../Single components/BasicModal'
 import { dataContext } from '../../GlobalStore/GeneralContext'
 import { Update } from '@mui/icons-material'
+import LoadingSpinner from '../Single components/LoadingSpinner'
+import EmptyModal from '../Single components/EmptyModal'
 
 let inputStyle = {
   background: 'rgba(255, 255, 255, 0.5)',
@@ -25,19 +27,15 @@ function UserHeroCard({ user }) {
   const [isEditModalOpen, setIsEditModalOpen] = React.useState(false)
   const [friendId, setFriendId] = React.useState('')
   const { setFriendList, setUser } = React.useContext(dataContext)
+  const [loading, setLoading] = React.useState(false)
   const [updatedUser, setUpdatedUser] = React.useState({
     id: user.id,
     name: user.name,
     image: user.image,
   })
 
-
-  React.useEffect(() => {
-
-  }, [updatedUser,setUpdatedUser])
-
-
-
+  React.useEffect(() => {}, [updatedUser, setUpdatedUser])
+  
 
   return (
     <div
@@ -50,6 +48,7 @@ function UserHeroCard({ user }) {
         color: 'rgba(0, 0, 0, 0.921)',
       }}
     >
+      {loading && <EmptyModal isModalOpen={true} content={<LoadingSpinner />} />}
       <BasicModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -63,52 +62,10 @@ function UserHeroCard({ user }) {
         setIsModalOpen={setIsEditModalOpen}
         modalFunction={async () => await UpdateUser(updatedUser, setUser)}
         content={
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              justifyItems: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <h4>Editar usuario</h4>
-       
-            <input
-              style={inputStyle}
-              type="text"
-              placeholder="Nombre (opcional)"
-              onKeyUp={(event) => {
-                let name = event.target.value
-
-                setUpdatedUser({ ...updatedUser, name: name })
-
-                console.log(name)
-              }}
-            />
-            <Input
-              style={inputStyle}
-              type="file"
-              placeholder="Imagen (opcional)"
-              onChange={(event) => {
-                let file = event.target.files[0]
-
-                // convert to base64
-
-                let reader = new FileReader()
-                reader.readAsDataURL(file)
-                reader.onload = () => {
-                  let base64 = reader.result
-                  alert(base64)
-                  setUpdatedUser({ ...updatedUser, image: base64 })
-                }
-                reader.onerror = (error) => {
-                  console.log('Error: ', error)
-                }
-              }}
-            />
-          </div>
+          <EditUserContent
+            updatedUser={updatedUser}
+            setUpdatedUser={setUpdatedUser}
+          />
         }
       />
 
@@ -144,7 +101,7 @@ function UserHeroCard({ user }) {
           <Tooltip title="Actualizar lista">
             <a
               onClick={async () => {
-                await UpdateFriendList(user.id, setFriendList)
+                await UpdateFriendList(user.id, setFriendList, setLoading)
               }}
               className="btn btn-outline-info"
               style={{ borderRadius: 15, margin: 2 }}
@@ -165,6 +122,8 @@ function UserHeroCard({ user }) {
           </Tooltip>
         </div>
       </div>
+
+ 
     </div>
   )
 }
@@ -192,7 +151,8 @@ async function AddFriend(userId, friendId, setFriendList) {
   }
 }
 
-async function UpdateFriendList(userId, setFriendList) {
+async function UpdateFriendList(userId, setFriendList, setLoading) {
+  setLoading(true)
   let response = await fetch(`https://localhost:7280/get-friends/${userId}`, {
     method: 'GET',
     headers: {
@@ -207,6 +167,7 @@ async function UpdateFriendList(userId, setFriendList) {
   } else {
     setFriendList(userResponse)
   }
+  setLoading(false)
 }
 
 function AddUserContent({ setFriendId }) {
@@ -234,7 +195,7 @@ function AddUserContent({ setFriendId }) {
   )
 }
 
-function EditUserContent({ newData, setNewData }) {
+function EditUserContent({ updatedUser, setUpdatedUser }) {
   return (
     <div
       style={{
@@ -247,6 +208,7 @@ function EditUserContent({ newData, setNewData }) {
       }}
     >
       <h4>Editar usuario</h4>
+
       <input
         style={inputStyle}
         type="text"
@@ -254,7 +216,9 @@ function EditUserContent({ newData, setNewData }) {
         onKeyUp={(event) => {
           let name = event.target.value
 
-          setNewData({ ...newData, name: name })
+          setUpdatedUser({ ...updatedUser, name: name })
+
+
         }}
       />
       <Input
@@ -270,8 +234,8 @@ function EditUserContent({ newData, setNewData }) {
           reader.readAsDataURL(file)
           reader.onload = () => {
             let base64 = reader.result
-            alert(base64)
-            setNewData({ ...newData, image: base64 })
+
+            setUpdatedUser({ ...updatedUser, image: base64 })
           }
           reader.onerror = (error) => {
             console.log('Error: ', error)
@@ -282,15 +246,9 @@ function EditUserContent({ newData, setNewData }) {
   )
 }
 
-async function UpdateUser( newData, setUser ) {
-
-
+async function UpdateUser(newData, setUser) {
   let userLocal = JSON.parse(localStorage.getItem('user'))
   newData['id'] = userLocal['id']
-
-
-
-
 
   let response = await fetch(`https://localhost:7280/update-user`, {
     method: 'PUT',

@@ -6,17 +6,20 @@ import { Mic, Send } from '@mui/icons-material'
 import StopIcon from '@mui/icons-material/Stop'
 import FadeInWhenVisible from '../Page animation/FadeWhenVisible'
 import { dataContext } from '../../GlobalStore/GeneralContext'
+import useRecorder from '../../custom hooks/useRecorder'
+import EmptyModal from '../Single components/EmptyModal'
+import BasicModal from '../Single components/BasicModal'
 
 function InputMessage() {
+  let [audioURL, isRecording, startRecording, stopRecording] = useRecorder()
+  const [isRecordingActive, setIsRecordingActive] = React.useState(false)
+  const [isPreviewRecording, setIsPreviewRecording] = React.useState(false)
   const [isTexting, setIsTexting] = React.useState(false)
-  const [isRecording, setIsRecording] = React.useState(false)
-  const {
-    messageList,
-    setMessageList,
-    currentFriend,
-    user,
-    webSocket,
-  } = React.useContext(dataContext)
+  const [audioID, setAudioID] = React.useState('')
+
+  const { messageList, setMessageList, currentFriend, user } = React.useContext(
+    dataContext,
+  )
 
   const [textInputValue, setTextInputValue] = React.useState('')
 
@@ -33,19 +36,50 @@ function InputMessage() {
     setTextInputValue(event.target.value)
 
     if (event.key === 'Enter' && textInputValue.length > 0) {
-      sendTextMessage()
+      sendTextMessage(textInputValue, 'text')
     }
   }
 
-  function sendTextMessage() {
+  async function uploadAudio() {
+    /// convert to blob and send to server
+
+    let blob = await fetch(audioURL).then((r) => r.blob())
+
+    /// wav form data
+    let formData = new FormData()
+    formData.append('file', blob)
+    formData.append('filename', 'audio.wav')
+    formData.append('filetype', 'audio/wav')
+
+    var requestOptions = {
+      method: 'POST',
+      body: formData,
+    }
+
+    let response = await fetch(
+      'https://localhost:7280/upload-file2',
+      requestOptions,
+    )
+    let data = await response.json()
+
+    if (data.status === 400) {
+      alert('Error al subir audio')
+    } else {
+      localStorage.setItem('audioID', data.id)
+    }
+
+    return audioID
+  }
+
+  function sendTextMessage(textContent, type) {
     setMessageList([
       ...messageList,
       {
         id: messageList.length,
-        message: textInputValue,
+        message: textContent,
         sender: user.id,
-        receiber: currentFriend.id,
-        type: 'text',
+        receiver: currentFriend.id,
+        type: type,
         timestamp: new Date().toJSON(),
       },
     ])
@@ -55,11 +89,12 @@ function InputMessage() {
       let message = {
         sender: user.id,
         receiver: currentFriend.id,
-        message: textInputValue,
-        type: 'text',
+        message: textContent,
+        type: type,
         timestamp: new Date().toJSON(),
       }
       ws.send(JSON.stringify(message))
+      ws.close()
     }
     let input = document.querySelector('.input-chat')
     input.value = ''
@@ -73,7 +108,7 @@ function InputMessage() {
       setIsTexting(false)
     }
     return () => {}
-  }, [textInputValue])
+  }, [textInputValue, setAudioID, audioID])
 
   return (
     <div className="chat-message clearfix">
@@ -88,6 +123,42 @@ function InputMessage() {
           placeholder="Escribe un mensaje"
         />
 
+        {isPreviewRecording ? (
+          <BasicModal
+            isModalOpen={isPreviewRecording}
+            setIsModalOpen={setIsPreviewRecording}
+            modalFunction={async () => {
+              let id = await uploadAudio()
+
+              setAudioID(id)
+
+              if (localStorage.getItem('audioID')) {
+                let localAudioID = localStorage.getItem('audioID')
+
+                sendTextMessage(localAudioID, 'audio')
+                setIsPreviewRecording(false)
+              }
+            }}
+            content={
+              <div
+                style={{
+                  margin: 30,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <h2 style={{ marginBottom: 30, textAlign: 'center' }}>
+                  Preview
+                </h2>
+                <audio src={audioURL} controls />
+                {/* do you want to send this message? */}
+                <h6 style={{ margin: 20 }}>queres enviar este mensaje?</h6>
+              </div>
+            }
+          />
+        ) : null}
+
         {isTexting ? (
           <FadeInWhenVisible>
             <div
@@ -96,7 +167,7 @@ function InputMessage() {
             >
               <IconButton
                 onClick={() => {
-                  sendTextMessage()
+                  sendTextMessage(textInputValue, 'text')
                 }}
                 style={{
                   background:
@@ -116,7 +187,14 @@ function InputMessage() {
             >
               <IconButton
                 onClick={() => {
-                  setIsRecording(!isRecording)
+                  if (!isRecordingActive) {
+                    startRecording()
+                    setIsRecordingActive(true)
+                  } else {
+                    stopRecording()
+                    setIsRecordingActive(false)
+                    setIsPreviewRecording(true)
+                  }
                 }}
               >
                 {isRecording ? (
@@ -134,8 +212,3 @@ function InputMessage() {
 }
 
 export default InputMessage
-
-function handleSubmit(event) {
-  event.preventDefault()
-  alert('A name was submitted: ')
-}

@@ -44,9 +44,9 @@ export default function BasicModal({
               variant="contained"
               color="success"
               style={{ margin: 10, borderRadius: 10 }}
-              onClick={async () => {
+              onClick={ () => {
                 handleClose(false)
-                await modalFunction()
+                 modalFunction()
               }}
             >
               Yes
