@@ -53,7 +53,7 @@ function RegisterForm() {
           type="text"
           autocomplete="on"
           spellcheck="false"
-          tabindex="0"
+    
           aria-label="name"
           placeholder="Nombre"
           name="name"
@@ -65,7 +65,7 @@ function RegisterForm() {
         />
 
         <input
-          tabIndex="1"
+   
           style={inputStyle}
           name="username"
           type="username"
@@ -77,7 +77,7 @@ function RegisterForm() {
           }}
         />
         <input
-          tabIndex="2"
+      
           name="password"
           style={inputStyle}
           type="password"
@@ -90,7 +90,7 @@ function RegisterForm() {
           }}
         />
         <input
-          tabIndex="3"
+      
           name="repeatedPassword"
           style={inputStyle}
           type="prepeatedPassword"
@@ -137,7 +137,7 @@ function RegisterForm() {
           onClick={async () => {
             await RegisterUser(userForm, setLoading)
           }}
-          tabIndex="4"
+        
           variant="contained"
           style={buttonStyle}
         >
