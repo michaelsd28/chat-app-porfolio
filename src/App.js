@@ -2,19 +2,20 @@ import { Switch } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import NoPage from "./components/404 page/NoPage";
+import React from "react";
 import MainChat from "./components/chat app/MainChat";
 import LandingPage from "./components/landing page/LandingPage";
-import LoginPage from "./components/authentication page/LoginPage"
+import LoginPage from "./components/authentication page/LoginPage";
 import ThemeSwitch from "./components/Single components/ThemeSwitch";
 import GeneralContextProvider from "./GlobalStore/GeneralContext";
 
-
 function App() {
+
+
+
   return (
     <>
       <GeneralContextProvider>
-   
-
         <AnimatePresence>
           <BrowserRouter>
             <Routes>

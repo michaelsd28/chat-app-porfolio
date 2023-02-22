@@ -108,7 +108,7 @@ function MainChat() {
                       autoCorrect="off"
                       type="text"
                       className="form-control "
-                      placeholder="🔍 Search..."
+                      placeholder="🔍 Buscar..."
                       spellCheck="false"
                     />
                   </div>

@@ -43,7 +43,7 @@ function LoginForm() {
           }}
           style={{ borderRadius: 10 }}
           type="password"
-          placeholder="Password"
+          placeholder="Contraseña"
         />
         <a href="#">Olvidaste la contraseña?</a>
 

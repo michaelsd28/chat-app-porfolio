@@ -34,8 +34,13 @@ function UserHeroCard({ user }) {
     image: user.image,
   })
 
-  React.useEffect(() => {}, [updatedUser, setUpdatedUser])
+
   
+
+  React.useEffect(() => {
+
+
+  }, [updatedUser, setUpdatedUser])
 
   return (
     <div
@@ -48,7 +53,9 @@ function UserHeroCard({ user }) {
         color: 'rgba(0, 0, 0, 0.921)',
       }}
     >
-      {loading && <EmptyModal isModalOpen={true} content={<LoadingSpinner />} />}
+      {loading && (
+        <EmptyModal isModalOpen={true} content={<LoadingSpinner />} />
+      )}
       <BasicModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -122,8 +129,6 @@ function UserHeroCard({ user }) {
           </Tooltip>
         </div>
       </div>
-
- 
     </div>
   )
 }
@@ -217,8 +222,6 @@ function EditUserContent({ updatedUser, setUpdatedUser }) {
           let name = event.target.value
 
           setUpdatedUser({ ...updatedUser, name: name })
-
-
         }}
       />
       <Input

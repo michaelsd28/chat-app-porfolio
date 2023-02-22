@@ -32,7 +32,7 @@ function ChatHeader() {
           </a>
           <div className="chat-about">
             <h6 className="m-b-0">{currentFriend.name}</h6>
-            <small>Last seen: 2 hours ago</small>
+            <small>Visto: hace 2 horas</small>
           </div>
         </div>
       )}

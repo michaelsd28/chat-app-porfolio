@@ -93,7 +93,7 @@ function RegisterForm() {
       
           name="repeatedPassword"
           style={inputStyle}
-          type="prepeatedPassword"
+          type="password"
           placeholder="Repite la contraseña"
           label="repeatedPassword"
           onKeyUp={(event) => {
